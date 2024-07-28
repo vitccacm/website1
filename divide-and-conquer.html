@@ -1,0 +1,144 @@
+<h1 id="divide-and-conquer">Divide and Conquer</h1>
+<h3 id="1-write-a-java-function-to-find-the-maximum-subarray-sum-in-an-array-using-the-divide-and-conquer-approach-the-subarray-must-be-non-empty-and-the-function-should-return-0-if-all-elements-in-the-array-are-negative-">1. Write a Java function to find the maximum subarray sum in an array using the divide and conquer approach. The subarray must be non-empty, and the function should return 0 if all elements in the array are negative.</h3>
+<h3 id="java-code">Java Code</h3>
+<pre><code class="lang-java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> MaximumSubarraySum {
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">int</span> maxSubarraySum(<span class="hljs-keyword">int</span>[] nums) {
+        <span class="hljs-built_in">return</span> maxSubarraySumDivideAndConquer(nums, <span class="hljs-number">0</span>, nums.length - <span class="hljs-number">1</span>);
+    }
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">int</span> maxSubarraySumDivideAndConquer(<span class="hljs-keyword">int</span>[] nums, <span class="hljs-keyword">int</span> left, <span class="hljs-keyword">int</span> right) {
+        <span class="hljs-built_in">if</span> (left == right) {
+            <span class="hljs-built_in">if</span> (nums[left] &lt; <span class="hljs-number">0</span>) {
+                <span class="hljs-built_in">return</span> <span class="hljs-number">0</span>; <span class="hljs-comment">// If the only element is negative, return 0.</span>
+            } <span class="hljs-built_in">else</span> {
+                <span class="hljs-built_in">return</span> nums[left]; <span class="hljs-comment">// If the only element is positive, return it.</span>
+            }
+        }
+
+        <span class="hljs-keyword">int</span> mid = (left + right) / <span class="hljs-number">2</span>;
+
+        <span class="hljs-comment">// Find the maximum subarray sum in the left and right subarrays.</span>
+        <span class="hljs-keyword">int</span> leftMax = maxSubarraySumDivideAndConquer(nums, left, mid);
+        <span class="hljs-keyword">int</span> rightMax = maxSubarraySumDivideAndConquer(nums, mid + <span class="hljs-number">1</span>, right);
+
+        <span class="hljs-comment">// Find the maximum subarray sum that crosses the midpoint.</span>
+        <span class="hljs-keyword">int</span> crossMax = maxCrossingSum(nums, left, mid, right);
+
+        <span class="hljs-comment">// Return the maximum of the three subarray sums.</span>
+        <span class="hljs-built_in">return</span> Math.<span class="hljs-built_in">max</span>(Math.<span class="hljs-built_in">max</span>(leftMax, rightMax), crossMax);
+    }
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">int</span> maxCrossingSum(<span class="hljs-keyword">int</span>[] nums, <span class="hljs-keyword">int</span> left, <span class="hljs-keyword">int</span> mid, <span class="hljs-keyword">int</span> right) {
+        <span class="hljs-keyword">int</span> leftSum = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> leftMax = Integer.MIN_VALUE;
+        <span class="hljs-built_in">for</span> (<span class="hljs-keyword">int</span> i = mid; i &gt;= left; i--) {
+            leftSum += nums[i];
+            leftMax = Math.<span class="hljs-built_in">max</span>(leftMax, leftSum);
+        }
+
+        <span class="hljs-keyword">int</span> rightSum = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> rightMax = Integer.MIN_VALUE;
+        <span class="hljs-built_in">for</span> (<span class="hljs-keyword">int</span> i = mid + <span class="hljs-number">1</span>; i &lt;= right; i++) {
+            rightSum += nums[i];
+            rightMax = Math.<span class="hljs-built_in">max</span>(rightMax, rightSum);
+        }
+
+        <span class="hljs-built_in">return</span> leftMax + rightMax;
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> main(<span class="hljs-keyword">String</span>[] args) {
+        <span class="hljs-keyword">int</span>[] arr = { <span class="hljs-number">-2</span>, <span class="hljs-number">-3</span>, <span class="hljs-number">-1</span>, <span class="hljs-number">-5</span>, <span class="hljs-number">-7</span> };
+        <span class="hljs-keyword">int</span> result = maxSubarraySum(arr);
+        System.out.<span class="hljs-built_in">println</span>(<span class="hljs-string">"Maximum subarray sum: "</span> + result);
+    }
+}
+</code></pre>
+<h3 id="2-write-a-java-function-to-find-the-square-root-of-a-positive-integer-using-the-divide-and-conquer-approach-you-should-implement-this-without-using-any-loops-or-built-in-square-root-functions-e-g-math-sqrt-your-function-should-be-efficient-with-a-time-complexity-better-than-o-n-">2. Write a Java function to find the square root of a positive integer using the divide and conquer approach. You should implement this without using any loops or built-in square root functions (e.g., Math.sqrt). Your function should be efficient, with a time complexity better than O(n).</h3>
+<h3 id="java-code">Java Code</h3>
+<pre><code class="lang-java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SquareRootUsingDivideAndConquer</span> </span>{
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-function"><span class="hljs-keyword">double</span> <span class="hljs-title">squareRoot</span><span class="hljs-params">(<span class="hljs-keyword">double</span> x)</span> </span>{
+        <span class="hljs-keyword">if</span> (x &lt; <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> IllegalArgumentException(<span class="hljs-string">"Input must be a positive number"</span>);
+        }
+        <span class="hljs-keyword">if</span> (x == <span class="hljs-number">0</span> || x == <span class="hljs-number">1</span>) {
+            <span class="hljs-keyword">return</span> x;
+        }
+        <span class="hljs-function"><span class="hljs-keyword">return</span> <span class="hljs-title">sqrtHelper</span><span class="hljs-params">(x, <span class="hljs-number">0</span>, x)</span></span>;
+    }
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-function"><span class="hljs-keyword">double</span> <span class="hljs-title">sqrtHelper</span><span class="hljs-params">(<span class="hljs-keyword">double</span> x, <span class="hljs-keyword">double</span> left, <span class="hljs-keyword">double</span> right)</span> </span>{
+        <span class="hljs-keyword">double</span> epsilon = <span class="hljs-number">0.00001</span>; <span class="hljs-comment">// A small value for precision</span>
+
+        <span class="hljs-keyword">double</span> mid = (left + right) / <span class="hljs-number">2</span>;
+        <span class="hljs-keyword">double</span> square = mid * mid;
+
+        <span class="hljs-keyword">if</span> (Math.abs(square - x) &lt;= epsilon) {
+            <span class="hljs-keyword">return</span> mid;
+        } <span class="hljs-function"><span class="hljs-keyword">else</span> <span class="hljs-title">if</span> <span class="hljs-params">(square &lt; x)</span> </span>{
+            <span class="hljs-function"><span class="hljs-keyword">return</span> <span class="hljs-title">sqrtHelper</span><span class="hljs-params">(x, mid, right)</span></span>;
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-function"><span class="hljs-keyword">return</span> <span class="hljs-title">sqrtHelper</span><span class="hljs-params">(x, left, mid)</span></span>;
+        }
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>{
+        <span class="hljs-keyword">double</span> num = <span class="hljs-number">16.0</span>; <span class="hljs-comment">// Change this to the desired positive number</span>
+        <span class="hljs-keyword">double</span> result = squareRoot(num);
+        System.out.println(<span class="hljs-string">"Square root of "</span> + num + <span class="hljs-string">" is approximately: "</span> + result);
+    }
+}
+</code></pre>
+<h3 id="3-you-are-given-a-sequence-of-positive-integers-and-you-need-to-find-the-index-at-which-the-sequence-divides-into-two-parts-such-that-the-product-of-elements-in-the-left-part-is-equal-to-the-product-of-elements-in-the-right-part-if-no-such-index-exists-return-1-write-a-java-function-to-solve-this-problem-efficiently-using-the-divide-and-conquer-approach-">3. You are given a sequence of positive integers, and you need to find the index at which the sequence &quot;divides&quot; into two parts, such that the product of elements in the left part is equal to the product of elements in the right part. If no such index exists, return -1. Write a Java function to solve this problem efficiently using the divide and conquer approach.</h3>
+<h3 id="java-code">Java Code</h3>
+<pre><code class="lang-java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">DivideProductEqualIndex</span> {
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">int</span> <span class="hljs-title">divideProductEqual</span>(<span class="hljs-params"><span class="hljs-keyword">int</span>[] nums</span>) </span>{
+        <span class="hljs-keyword">int</span> n = nums.length;
+        <span class="hljs-keyword">if</span> (n == <span class="hljs-number">0</span>)
+            <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;
+
+        <span class="hljs-keyword">int</span> totalProduct = getProduct(nums, <span class="hljs-number">0</span>, n - <span class="hljs-number">1</span>);
+        <span class="hljs-keyword">return</span> divideProductEqualRecursive(nums, <span class="hljs-number">0</span>, n - <span class="hljs-number">1</span>, totalProduct);
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">int</span> <span class="hljs-title">divideProductEqualRecursive</span>(<span class="hljs-params"><span class="hljs-keyword">int</span>[] nums, <span class="hljs-keyword">int</span> left, <span class="hljs-keyword">int</span> right, <span class="hljs-keyword">int</span> totalProduct</span>) </span>{
+        <span class="hljs-keyword">if</span> (left == right)
+            <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;
+
+        <span class="hljs-keyword">int</span> mid = (left + right) / <span class="hljs-number">2</span>;
+        <span class="hljs-keyword">int</span> leftProduct = getProduct(nums, left, mid);
+        <span class="hljs-keyword">int</span> rightProduct = totalProduct / leftProduct;
+
+        <span class="hljs-keyword">if</span> (leftProduct == rightProduct)
+            <span class="hljs-keyword">return</span> mid;
+
+        <span class="hljs-keyword">int</span> leftResult = divideProductEqualRecursive(nums, left, mid, totalProduct);
+        <span class="hljs-keyword">int</span> rightResult = divideProductEqualRecursive(nums, mid + <span class="hljs-number">1</span>, right, totalProduct);
+
+        <span class="hljs-keyword">if</span> (leftResult != <span class="hljs-number">-1</span>)
+            <span class="hljs-keyword">return</span> leftResult;
+        <span class="hljs-keyword">if</span> (rightResult != <span class="hljs-number">-1</span>)
+            <span class="hljs-keyword">return</span> rightResult;
+
+        <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">int</span> <span class="hljs-title">getProduct</span>(<span class="hljs-params"><span class="hljs-keyword">int</span>[] nums, <span class="hljs-keyword">int</span> left, <span class="hljs-keyword">int</span> right</span>) </span>{
+        <span class="hljs-keyword">int</span> product = <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = left; i &lt;= right; i++) {
+            product *= nums[i];
+        }
+        <span class="hljs-keyword">return</span> product;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span>(<span class="hljs-params">String[] args</span>) </span>{
+        <span class="hljs-keyword">int</span>[] sequence = { <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">6</span>, <span class="hljs-number">4</span>, <span class="hljs-number">2</span> };
+        <span class="hljs-keyword">int</span> result = divideProductEqual(sequence);
+        <span class="hljs-keyword">if</span> (result != <span class="hljs-number">-1</span>) {
+            System.<span class="hljs-keyword">out</span>.println(<span class="hljs-string">"The sequence divides at index "</span> + result);
+        } <span class="hljs-keyword">else</span> {
+            System.<span class="hljs-keyword">out</span>.println(<span class="hljs-string">"No such index exists."</span>);
+        }
+    }
+}
+</code></pre>
