@@ -1,0 +1,190 @@
+<h1 id="graphs-and-trees-">Graphs And Trees:</h1>
+<p>A <strong>graph</strong> is made up of nodes (also known as vertices) and the edges that connect them.It is a flexible data format used to depict links and relationships between items.Graphs can be either undirected (where the edges have no direction) or directed (where the edges have a direction). They can be unweighted (where the edges have no values) or weighted (where the edges have values).The depth-first search (DFS) and breadth-first search (BFS) traversal algorithms, the Dijkstra&#39;s algorithm for shortest pathways, and the Kruskal&#39;s method for minimal spanning trees are examples of common graph algorithms.</p>
+<p>A particular kind of graph without cycles (i.e., no closed loops) is a <strong>tree</strong>. In a tree, there is a root node from which child nodes branch out.A node in a tree may have 0–no child nodes, or more.Hierarchical structures, such as file systems or organisational hierarchies, are frequently represented by trees.Binary search trees (left child is smaller, right child is larger) and binary trees (each node has at most two children) are special varieties of trees.</p>
+<h3 id="-example-1-"><strong>Example 1</strong>:</h3>
+<p>You have a special type of graph called a &quot;star graph,&quot; which has a center node and lines connecting it to other nodes. The lines don&#39;t connect these other nodes to each other, only to the center. You&#39;re given a list of these lines represented as pairs of nodes. Your task is to find and tell me which node is the center of this star graph.</p>
+<pre><code class="lang-java">import java.util.*;
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">Main</span> {
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">findCenter</span>(<span class="hljs-params"><span class="hljs-keyword">int</span>[][] edges</span>) </span>{
+        <span class="hljs-keyword">int</span>[] degree = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[edges.length + <span class="hljs-number">2</span>];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; edges.length; i++) {
+            degree[edges[i][<span class="hljs-number">0</span>]]++;
+            degree[edges[i][<span class="hljs-number">1</span>]]++;
+        }
+        <span class="hljs-keyword">int</span> center = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> maxDegree = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt; degree.length; i++) {
+            <span class="hljs-keyword">if</span> (degree[i] &gt; maxDegree) {
+                maxDegree = degree[i];
+                center = i;
+            }
+        }
+        <span class="hljs-keyword">return</span> center;
+    }
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span>(<span class="hljs-params">String[] args</span>) </span>{
+        <span class="hljs-keyword">int</span>[][] edges = {{<span class="hljs-number">1</span>, <span class="hljs-number">2</span>}, {<span class="hljs-number">2</span>, <span class="hljs-number">3</span>}, {<span class="hljs-number">4</span>, <span class="hljs-number">2</span>}, {<span class="hljs-number">4</span>, <span class="hljs-number">5</span>}};
+        Main solution = <span class="hljs-keyword">new</span> Main();
+        <span class="hljs-keyword">int</span> center = solution.findCenter(edges);
+        System.<span class="hljs-keyword">out</span>.println(<span class="hljs-string">"The center of the star graph is: "</span> + center);
+    }
+}
+</code></pre>
+<h4 id="approach">Approach</h4>
+<p>We initially look at the frequency with which each node appears in the list of edges in order to locate the star graph&#39;s centre. This involves counting the number of edges or links that each graph node has.By definition, all other nodes in a star graph are connected to the centre node. As a result, it will be the node that appears on as many occasions as there are graph edges. This is so because every connection increases the number of times the main node appears in the list of edges.</p>
+<p>We simply identify the centre node by comparing the appearance count of each node to the total number of edges in the graph. The centre of the star graph is, in fact, the node that perfectly satisfies this requirement.Then, since it is the centre node of the graph&#39;s star-shaped connections, we return this node identification as our ultimate outcome.</p>
+<h3 id="-example-2-"><strong>Example 2</strong>:</h3>
+<pre><code class="lang-java"><span class="hljs-keyword">import</span> java.util.ArrayList;
+<span class="hljs-keyword">import</span> java.util.List;
+
+<span class="hljs-comment">// Definition for a binary tree node.</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TreeNode</span> </span>{
+    int <span class="hljs-keyword">val</span>;
+    TreeNode left;
+    TreeNode right;
+    TreeNode() {}
+    TreeNode(int <span class="hljs-keyword">val</span>) {
+        <span class="hljs-keyword">this</span>.<span class="hljs-keyword">val</span> = <span class="hljs-keyword">val</span>;
+    }
+    TreeNode(int <span class="hljs-keyword">val</span>, TreeNode left, TreeNode right) {
+        <span class="hljs-keyword">this</span>.<span class="hljs-keyword">val</span> = <span class="hljs-keyword">val</span>;
+        <span class="hljs-keyword">this</span>.left = left;
+        <span class="hljs-keyword">this</span>.right = right;
+    }
+}
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">private</span> List&lt;Integer&gt; ans = new ArrayList&lt;&gt;();
+    <span class="hljs-keyword">public</span> void preorder(TreeNode root) {
+        <span class="hljs-keyword">if</span> (root == <span class="hljs-literal">null</span>) {
+            <span class="hljs-keyword">return</span>;
+        }
+        ans.add(root.<span class="hljs-keyword">val</span>);
+        preorder(root.left);
+        preorder(root.right);
+    }
+    <span class="hljs-keyword">public</span> List&lt;Integer&gt; preorderTraversal(TreeNode root) {
+        preorder(root);
+        <span class="hljs-keyword">return</span> ans;
+    }
+}
+</code></pre>
+<h3 id="complete-code">Complete code</h3>
+<pre><code class="lang-java"><span class="hljs-keyword">import</span> java.util.ArrayList;
+<span class="hljs-keyword">import</span> java.util.List;
+
+<span class="hljs-comment">// Definition for a binary tree node.</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TreeNode</span> </span>{
+    int <span class="hljs-keyword">val</span>;
+    TreeNode left;
+    TreeNode right;
+    TreeNode() {}
+    TreeNode(int <span class="hljs-keyword">val</span>) {
+        <span class="hljs-keyword">this</span>.<span class="hljs-keyword">val</span> = <span class="hljs-keyword">val</span>;
+    }
+    TreeNode(int <span class="hljs-keyword">val</span>, TreeNode left, TreeNode right) {
+        <span class="hljs-keyword">this</span>.<span class="hljs-keyword">val</span> = <span class="hljs-keyword">val</span>;
+        <span class="hljs-keyword">this</span>.left = left;
+        <span class="hljs-keyword">this</span>.right = right;
+    }
+}
+
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Main</span> </span>{
+    <span class="hljs-keyword">private</span> List&lt;Integer&gt; ans = new ArrayList&lt;&gt;();
+
+    <span class="hljs-keyword">public</span> void preorder(TreeNode root) {
+        <span class="hljs-keyword">if</span> (root == <span class="hljs-literal">null</span>) {
+            <span class="hljs-keyword">return</span>;
+        }
+        ans.add(root.<span class="hljs-keyword">val</span>);
+        preorder(root.left);
+        preorder(root.right);
+    }
+
+    <span class="hljs-keyword">public</span> List&lt;Integer&gt; preorderTraversal(TreeNode root) {
+        preorder(root);
+        <span class="hljs-keyword">return</span> ans;
+    }
+
+    <span class="hljs-keyword">public</span> static void main(String[] args) {
+        <span class="hljs-comment">// Create a binary tree for testing</span>
+        TreeNode root = new TreeNode(<span class="hljs-number">1</span>);
+        root.right = new TreeNode(<span class="hljs-number">2</span>);
+        root.right.left = new TreeNode(<span class="hljs-number">3</span>);
+
+        <span class="hljs-comment">// Create an instance of Main</span>
+        Main solution = new Main();
+
+        <span class="hljs-comment">// Perform preorder traversal and print the result</span>
+        List&lt;Integer&gt; result = solution.preorderTraversal(root);
+        System.<span class="hljs-keyword">out</span>.println(<span class="hljs-string">"Preorder Traversal Result: "</span> + result);
+    }
+}
+</code></pre>
+<h4 id="approach">Approach</h4>
+<p>The preorder method is a recursive function that takes a TreeNode as input. It starts from the root node and visits nodes in the following order:</p>
+<ul>
+<li>Add the value of the current node to the ans list.</li>
+<li>Recursively call preorder on the left child (if exists).</li>
+<li>Recursively call preorder on the right child (if exists).</li>
+</ul>
+<p>The preorderTraversal method initiates the traversal by calling preorder on the root node and then returns the ans list containing the values in the preorder sequence.</p>
+<p>You start in room 0, which is already open. There are several other rooms with keys in them, and each key is labeled with the room it can unlock. You want to check if it&#39;s possible to visit all the rooms by using the keys you find along the way. In other words, can you eventually reach and unlock every room in the building starting from room 0? If you can, the answer is true; if not, it&#39;s false.</p>
+<h3 id="-example-3-"><strong>Example 3</strong>:</h3>
+<p>You start in room 0, which is already open. There are several other rooms with keys in them, and each key is labeled with the room it can unlock. You want to check if it&#39;s possible to visit all the rooms by using the keys you find along the way. In other words, can you eventually reach and unlock every room in the building starting from room 0? If you can, the answer is true; if not, it&#39;s false.</p>
+<pre><code class="lang-java"><span class="hljs-keyword">import</span> java.util.ArrayDeque;
+<span class="hljs-keyword">import</span> java.util.Queue;
+<span class="hljs-keyword">import</span> java.util.List;
+<span class="hljs-keyword">import</span> java.util.ArrayList;
+
+class Main {
+    <span class="hljs-keyword">public</span> <span class="hljs-built_in">boolean</span> canVisitAllRooms(List&lt;List&lt;Integer&gt;&gt; rooms) {
+        <span class="hljs-built_in">int</span> cur;
+        <span class="hljs-built_in">boolean</span> flag = <span class="hljs-keyword">false</span>;
+        Queue&lt;Integer&gt; q = <span class="hljs-keyword">new</span> ArrayDeque&lt;&gt;();
+        List&lt;Boolean&gt; vis = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;(rooms.<span class="hljs-built_in">size</span>());
+        <span class="hljs-comment">// Initialize vis with false values for all rooms</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; rooms.<span class="hljs-built_in">size</span>(); i++) {
+            vis.<span class="hljs-built_in">add</span>(<span class="hljs-keyword">false</span>);
+        }
+        q.<span class="hljs-built_in">add</span>(<span class="hljs-number">0</span>);
+        vis.<span class="hljs-built_in">set</span>(<span class="hljs-number">0</span>, <span class="hljs-keyword">true</span>);
+        <span class="hljs-keyword">while</span> (!q.isEmpty()) {
+            cur = q.poll();
+            <span class="hljs-keyword">for</span> (Integer <span class="hljs-built_in">key</span> : rooms.<span class="hljs-built_in">get</span>(cur)) {
+                <span class="hljs-keyword">if</span> (!vis.<span class="hljs-built_in">get</span>(<span class="hljs-built_in">key</span>)) {
+                    vis.<span class="hljs-built_in">set</span>(<span class="hljs-built_in">key</span>, <span class="hljs-keyword">true</span>);
+                    q.<span class="hljs-built_in">add</span>(<span class="hljs-built_in">key</span>);
+                }
+            }
+        }
+
+        <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> m = <span class="hljs-number">0</span>; m &lt; vis.<span class="hljs-built_in">size</span>(); m++) {
+            <span class="hljs-keyword">if</span> (!vis.<span class="hljs-built_in">get</span>(m)) {
+                flag = <span class="hljs-keyword">true</span>;
+                <span class="hljs-keyword">break</span>;
+            }
+        }
+        <span class="hljs-keyword">return</span> !flag;
+    }
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> main(<span class="hljs-keyword">String</span>[] args) {
+        <span class="hljs-comment">// Example usage:</span>
+        List&lt;List&lt;Integer&gt;&gt; rooms = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+        rooms.<span class="hljs-built_in">add</span>(List.of(<span class="hljs-number">1</span>)); <span class="hljs-comment">// Room 0 has key to Room 1</span>
+        rooms.<span class="hljs-built_in">add</span>(List.of(<span class="hljs-number">2</span>)); <span class="hljs-comment">// Room 1 has key to Room 2</span>
+        rooms.<span class="hljs-built_in">add</span>(<span class="hljs-keyword">new</span> ArrayList&lt;&gt;()); <span class="hljs-comment">// Room 2 has no keys</span>
+        Main solution = <span class="hljs-keyword">new</span> Main();
+        <span class="hljs-built_in">boolean</span> result = solution.canVisitAllRooms(rooms);
+        System.out.<span class="hljs-built_in">println</span>(<span class="hljs-string">"Can visit all rooms: "</span> + result);
+    }
+}
+</code></pre>
+<h4 id="approach">Approach</h4>
+<ol>
+<li>We have a list of rooms, where each room contains a set of keys that can open other rooms.</li>
+<li>We start in room 0, which is always open.</li>
+<li>We use a queue to keep track of the rooms we can currently visit. We initially add room 0 to the queue.</li>
+<li>We also maintain a list called <code>vis</code>, which keeps track of whether we&#39;ve visited each room. We mark room 0 as visited.</li>
+<li>We use a while loop to explore rooms. We dequeue a room, check its keys, and add any unvisited rooms to the queue, marking them as visited.</li>
+<li>After the loop, we check if any rooms are still unvisited in the <code>vis</code> list. If there are, it means we can&#39;t visit all rooms, so we set a flag to <code>true</code>.</li>
+<li>Finally, we return <code>true</code> if the flag is <code>false</code>, indicating we can visit all rooms, and <code>false</code> otherwise.</li>
+</ol>
+<p>In essence, we start in an open room and use keys to explore other rooms, ensuring we can reach every room in the building.</p>
