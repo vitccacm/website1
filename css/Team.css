@@ -47,7 +47,7 @@
     transition: 0.5s;
     border: 1px solid #000000;
     box-shadow: 0 0 0 4px #222, 0 0 0 6px #000000;
-    transform: rotate(calc(360deg/17*var(--i)));
+    transform: rotate(calc(360deg/15*var(--i)));
     transform-origin: 340px;
     z-index: 100;
     overflow: hidden;
@@ -65,7 +65,7 @@
     height: 100%;
     border-radius: 50%;
     object-fit: cover;
-    transform: rotate(calc(-360deg/17*var(--i)));
+    transform: rotate(calc(-360deg/15*var(--i)));
     transition: 0.5s;
     filter: grayscale(1);
 }
@@ -226,7 +226,7 @@
     .container .icon .imgBx{  /* main image */
         width: 37px;
         height: 37px;
-        transform: rotate(calc(360deg/17*var(--i)));
+        transform: rotate(calc(360deg/15*var(--i)));
         transform-origin: 180px;
         position: absolute;
         left: 9.4rem;
