@@ -47,7 +47,7 @@
     transition: 0.5s;
     border: 1px solid #000000;
     box-shadow: 0 0 0 4px #222, 0 0 0 6px #000000;
-    transform: rotate(calc(360deg/17*var(--i)));
+    transform: rotate(calc(360deg/15*var(--i)));
     transform-origin: 340px;
     z-index: 100;
     overflow: hidden;
@@ -65,7 +65,7 @@
     height: 100%;
     border-radius: 50%;
     object-fit: cover;
-    transform: rotate(calc(-360deg/17*var(--i)));
+    transform: rotate(calc(-360deg/15*var(--i)));
     transition: 0.5s;
     filter: grayscale(1);
 }
@@ -226,32 +226,27 @@
     .container .icon .imgBx{  /* main image */
         width: 37px;
         height: 37px;
-        transform: rotate(calc(360deg/17*var(--i)));
-        transform-origin: 180px;
+        transform: rotate(calc(360deg/15*var(--i)));
+        transform-origin: 170px;
         position: absolute;
-        left: 9.4rem;
-        top: 9.3rem;
+        left: 8.7rem;
+        top: 8.7rem;
     }
-    .container{
-        top: 40px;
-        position: relative;
-        width: 100px;
-        height: 100px;
-    }
+
     .contentBx .card .imgBx{ /*  hovered image */
         position: relative;
         /* left: 10rem;
         top: 8rem; */
-        width: 80px;
-        height: 80px;
+        width: 70px;
+        height: 70px;
         border-radius: 10px;
         overflow: hidden;
     }
     .container{
         /* top: 40px; */
         position: relative;
-        width: 340px;
-        height: 340px;
+        width: 310px;
+        height: 310px;
         border: 2px solid #000000;
         border-radius: 50%;
         left: 0.5rem;
